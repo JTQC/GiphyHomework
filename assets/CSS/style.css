@@ -1,0 +1,22 @@
+button {
+	
+}
+
+.button { text-transform: uppercase; 
+	height: 50px; 
+	border: 2px solid black; 
+	border-radius: 5px; 
+	display: inline-block; 
+	padding: 2px; 
+	float: left; 
+	margin: 2px; 
+}
+
+.button-color {
+	background-color: royalblue;
+	color: white;
+}
+
+#images {
+	float: right;
+}

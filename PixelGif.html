@@ -1,0 +1,109 @@
+<!doctype = html>
+<html lang = "en">
+
+<head>
+<title>Pixel Art Gif Generator</title>
+<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+<script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+</head>
+
+
+<body
+
+
+<!--- Form for adding buttons -->
+<form id="frm1" action="form_action.asp">
+  Add Your Own Button! <input type="text" name="fname" value=""><br>
+</form> 
+
+<button onclick="myFunction()">Add Button!</button>
+
+<script>
+function myFunction() {
+    var added = document.getElementById("frm1");
+    var text = "";
+    var i;
+    for (i = 0; i < added.length ; i++) {
+    	text += added.elements[i].value;
+    	console.log(text); 
+    	var neoButton = $("<button id = 'pixelButton'>");
+    	neoButton.addClass("pixel-button button button-color");
+    	neoButton.attr("pixel-button", text);
+    	neoButton.text(text);
+    	$("#buttons").append(neoButton);
+    }
+  
+}
+</script>
+
+<!--- Div to place dynamically created buttons -->
+	<div id ='buttons'>
+	</div>
+	<!--- Div to place dynamic images -->
+	<div id ="images">
+	</div>
+
+<script>
+$(document).ready(function() {
+
+//Initalize array of variables for clickin
+  var topics = ["pixel art", "game developer art", "pixel", "pixels", "best pixel art"]
+
+		//For loop to iterate through array and dynamically create buttons
+		for (var i= 0; i < topics.length; i++) {
+			var newButton = $("<button id = 'pixelButton'>");
+			newButton.addClass("pixel-button button button-color");
+			newButton.attr("pixel-button", topics[i]);
+			newButton.text(topics[i]);
+			$("#buttons").append(newButton);
+			
+		};
+});
+
+
+
+
+$(document).on('click', "#pixelButton", function() {
+		console.log("Is this thing on");
+
+		//initialize variables so search is conducted for the topics in buttons
+		var topicButton = $(this).text();		
+		console.log(topicButton);
+		var queryUrl = "http://api.giphy.com/v1/gifs/search?q=" + topicButton + "&api_key=dc6zaTOxFJmzC&limit=10";
+		
+		$.ajax({
+			url: queryUrl,
+			method: "GET"
+		})
+
+		.done(function(response) {
+			var results = response.data;
+
+			//Loop through results (should be 10) and create a new div with the rating and img in it.
+			for (var i = 0; i < results.length; i++) {
+				var newDiv = $("<div class='item'>")
+				var rating = results[i].rating;
+				var p = $("<p>").text("Rating: " + rating);
+				var returnImage = $("<img>");
+				returnImage.attr("src", results[i].images.fixed_height.url);
+
+				newDiv.prepend(returnImage);
+				newDiv.prepend(p);
+				//add the newDiv to the old image div so they are seperated nicely
+				$("#images").prepend(newDiv);
+			}
+		});
+});
+
+
+</script>
+	
+
+
+
+
+
+
+</body>
+
+</html>
